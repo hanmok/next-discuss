@@ -1,6 +1,13 @@
 "use server";
 
+import type { Topic } from "@prisma/client";
+// import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { z } from "zod";
+import { db } from "@/db";
+import paths from "@/path";
+import { revalidatePath } from "next/cache";
 
 const createTopicSchema = z.object({
     name: z
@@ -16,6 +23,7 @@ interface CreateTopicFormState {
     errors: {
         name?: string[];
         description?: string[];
+        _form?: string[];
     };
 }
 
@@ -34,8 +42,42 @@ export async function createTopic(
         };
     }
 
-    return {
-        errors: {},
-    };
-    // TODO: revalidate the homepage
+    const session = await auth();
+
+    if (!session || !session.user) {
+        return {
+            errors: {
+                _form: ["You must be signed in to do this."],
+            },
+        };
+    }
+
+    let topic: Topic;
+
+    try {
+        // throw new Error("Failed to create topic");
+
+        topic = await db.topic.create({
+            data: {
+                slug: result.data.name,
+                description: result.data.description,
+            },
+        });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return {
+                errors: {
+                    _form: [error.message],
+                },
+            };
+        } else {
+            return {
+                errors: {
+                    _form: ["Something went wrong"],
+                },
+            };
+        }
+    }
+    revalidatePath("/");
+    redirect(paths.topicShow(topic.slug));
 }

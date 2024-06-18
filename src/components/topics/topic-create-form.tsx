@@ -9,6 +9,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     Textarea,
+    divider,
 } from "@nextui-org/react";
 import * as actions from "@/actions";
 
@@ -34,9 +35,6 @@ export default function TopicCreateForm() {
                             isInvalid={!!formState.errors.name}
                             errorMessage={formState.errors.name?.join(", ")}
                         />
-                        {/* <div className="bg-red-400">
-                            {formState.errors.name?.join(", ")}
-                        </div> */}
                         <Textarea
                             name="description"
                             label="Description"
@@ -47,6 +45,13 @@ export default function TopicCreateForm() {
                                 ", "
                             )}
                         />
+
+                        {formState.errors._form ? (
+                            <div className="p-2 bg-red-200 border border-red-400 rounded">
+                                {formState.errors._form?.join(", ")}
+                            </div>
+                        ) : null}
+
                         <Button type="submit">Submit</Button>
                     </div>
                 </form>
