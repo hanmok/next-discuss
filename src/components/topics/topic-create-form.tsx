@@ -12,6 +12,7 @@ import {
     divider,
 } from "@nextui-org/react";
 import * as actions from "@/actions";
+import FormButton from "@/components/common/form-button";
 
 export default function TopicCreateForm() {
     const [formState, action] = useFormState(actions.createTopic, {
@@ -23,6 +24,7 @@ export default function TopicCreateForm() {
             <PopoverTrigger>
                 <Button color="primary">Create a Topic</Button>
             </PopoverTrigger>
+
             <PopoverContent>
                 <form action={action}>
                     <div className="flex flex-col gap-4 p-4 w-80">
@@ -52,7 +54,7 @@ export default function TopicCreateForm() {
                             </div>
                         ) : null}
 
-                        <Button type="submit">Submit</Button>
+                        <FormButton>Save</FormButton>
                     </div>
                 </form>
             </PopoverContent>

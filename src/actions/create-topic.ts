@@ -1,7 +1,6 @@
 "use server";
 
 import type { Topic } from "@prisma/client";
-// import { redirect } from 'next/dist/server/api-utils';
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { z } from "zod";
@@ -55,8 +54,6 @@ export async function createTopic(
     let topic: Topic;
 
     try {
-        // throw new Error("Failed to create topic");
-
         topic = await db.topic.create({
             data: {
                 slug: result.data.name,
