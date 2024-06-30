@@ -33,5 +33,6 @@ export default async function PostList({ fetchData }: PostListProps) {
         );
     });
 
+    console.log(`renderedPosts: ${posts}`);
     return <div className="space-y-2">{renderedPosts}</div>;
 }

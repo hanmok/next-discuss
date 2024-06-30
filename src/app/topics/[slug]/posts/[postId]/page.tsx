@@ -4,6 +4,8 @@ import paths from "@/paths";
 import Link from "next/link";
 import { fetchCommentsByPostId } from "@/db/queries/comments";
 import CommentList from "@/components/comments/comment-list";
+import { Suspense } from "react";
+import PostShowLoading from "@/components/posts/post-show-loading";
 
 interface PostShowPageProps {
     params: {
@@ -23,8 +25,13 @@ export default async function PostShowPage({ params }: PostShowPageProps) {
             >
                 {"< "}Back to {slug}
             </Link>
-            <PostShow postId={postId} />
+
+            <Suspense fallback={<PostShowLoading />}>
+                <PostShow postId={postId} />
+            </Suspense>
+
             <CommentCreateForm postId={postId} startOpen />
+
             <CommentList postId={postId} />
         </div>
     );
